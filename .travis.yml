@@ -3,19 +3,19 @@ services:
   - docker
 
 before_install:
-  - docker build -t ahmedeldeeb/client-test -f ./client/DockerFile.dev ./client
+  - docker build -t ahmedeldeeb/react-test -f ./client/Dockerfile.dev ./client
 
- script:
-  - docker run ahmedeldeeb/client-test npm test -- --coverage
+script:
+  - docker run ahmedeldeeb/react-test npm test -- --coverage
 
 after_success:
   - docker build -t ahmedeldeeb/multi-client ./client
   - docker build -t ahmedeldeeb/multi-nginx ./nginx
   - docker build -t ahmedeldeeb/multi-server ./server
   - docker build -t ahmedeldeeb/multi-worker ./worker
-   # Log in to the docker CLI
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-   # Take those images and push them to docker hub
+  # Take those images and push them to docker hub
   - docker push ahmedeldeeb/multi-client
   - docker push ahmedeldeeb/multi-nginx
   - docker push ahmedeldeeb/multi-server
